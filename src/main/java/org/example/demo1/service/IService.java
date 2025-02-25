@@ -17,4 +17,5 @@ public interface IService <T extends Person>{
     T findById(int id);
 
     List<T> findAllByName(String name);
+
 }

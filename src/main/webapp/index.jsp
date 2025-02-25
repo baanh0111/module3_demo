@@ -13,5 +13,7 @@
 <a href="teachers">Quan ly giao vien </a>
 <br/>
 <a href="classes">Quan ly lớp học </a>
+<br/>
+<a href="schedules">Quan ly lớp học </a>
 </body>
 </html>
