@@ -65,6 +65,7 @@ public class StudentRepository {
         }
     }
 
+
     public Student findById(int id) {
         String query = "SELECT * FROM Students WHERE student_id = ?";
 
@@ -152,5 +153,27 @@ public class StudentRepository {
             case "other": return "Other";
             default: throw new IllegalArgumentException("Giới tính không hợp lệ! Chỉ chấp nhận 'Male', 'Female' hoặc 'Other'.");
         }
+    }
+    public Student getStudentById(int id) {
+        String query = "SELECT * FROM students WHERE id = ?";
+        try (Connection connection = BaseRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new Student(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("dob"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("address"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy sinh viên
     }
 }

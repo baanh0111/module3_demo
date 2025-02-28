@@ -13,5 +13,9 @@
 <a href="teachers">Quan ly giao vien </a>
 <br/>
 <a href="classes">Quan ly lớp học </a>
+</br>
+<a href="subjects">Quan ly Môn Học </a>
+<br/>
+<a href="grades">Quan ly Diem Hoc Sinh </a>
 </body>
 </html>

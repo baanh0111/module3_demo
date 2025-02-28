@@ -8,6 +8,8 @@ import java.util.List;
 
 public class StudentService implements IStudentService {
     private static StudentRepository studentRepository = new StudentRepository();
+
+
     @Override
     public List<Student> getAll() {
         return studentRepository.findAll();
@@ -37,5 +39,5 @@ public class StudentService implements IStudentService {
     public List<Student> findAllByName(String name) {
         return studentRepository.findAllByName(name);
     }
-}
 
+}
