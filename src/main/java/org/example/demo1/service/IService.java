@@ -19,7 +19,4 @@ public interface IService <T extends Person>{
     List<T> findAllByName(String name);
 
 
-
-
-
 }

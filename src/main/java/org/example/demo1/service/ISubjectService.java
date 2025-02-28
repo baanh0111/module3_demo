@@ -1,15 +1,21 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package org.example.demo1.service;
 
-
-
-import org.example.demo1.entity.Subject;
-
 import java.util.List;
+import org.example.demo1.entity.Subject;
 
 public interface ISubjectService {
     List<Subject> getAllSubject();
-    Subject getSubjectById(int subject_id);
-    boolean addSubject(Subject subject);
-    boolean updateSubject(Subject subject);
-    boolean deleteSubject(int subject_id);
+
+    Subject getSubjectById(int var1);
+
+    boolean addSubject(Subject var1);
+
+    boolean updateSubject(Subject var1);
+
+    boolean deleteSubject(int var1);
 }

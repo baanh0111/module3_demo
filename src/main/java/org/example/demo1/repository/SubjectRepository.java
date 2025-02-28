@@ -6,93 +6,43 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.demo1.repository.BaseRepository.getConnection;
+
 public class SubjectRepository {
-
-    public List<Subject> getAllSubject() {
+    public List<Subject> findAll() {
         List<Subject> subjects = new ArrayList<>();
-        String sql = "SELECT subject_id, subject_name FROM subjects"; // Vérifiez les noms des colonnes !
-
-        try (Connection connection = BaseRepository.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("subject_id"); // ✅ Correction ici
-                String name = resultSet.getString("subject_name");
-                subjects.add(new Subject(id, name));
+        String query = "SELECT * FROM subjects";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                subjects.add(mapResultSetToSubject(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi lấy danh sách môn học: " + e.getMessage(), e);
         }
         return subjects;
     }
 
-
-    public Subject getSubjectById(int subject_id) {
-        String query = "SELECT * FROM subjects WHERE subject_id = ?";
-        try (Connection conn = BaseRepository.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, subject_id);
-            ResultSet rs = pstmt.executeQuery();
-
+    public Subject findById(int id) {
+        String query = "SELECT * FROM subjects WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Subject(rs.getInt("id"), rs.getString("name"));
+                return mapResultSetToSubject(rs);
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi khi lấy môn học theo ID: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi tìm môn học theo ID: " + e.getMessage(), e);
         }
         return null;
     }
 
-    public boolean addSubject(Subject subject) {
-        String query = "INSERT INTO subjects (subject_name) VALUES (?)";
-        try (Connection conn = BaseRepository.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
-            pstmt.setString(1, subject.getName());
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println("Môn học đã được thêm thành công: " + subject.getName());
-                return true;
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm môn học: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean updateSubject(Subject subject) {
-        String query = "UPDATE subjects SET subject_name = ? WHERE subject_id = ?";
-        try (Connection conn = BaseRepository.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, subject.getName());
-            pstmt.setInt(2, subject.getId());
-            return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi cập nhật môn học: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean deleteSubject(int subject_id) {
-        String query = "DELETE FROM subjects WHERE subject_id = ?";
-        try (Connection conn = BaseRepository.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setInt(1, subject_id);
-            return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi xóa môn học: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
+    private Subject mapResultSetToSubject(ResultSet rs) throws SQLException {
+        return new Subject(
+                rs.getInt("subject_id"),
+                rs.getString("subject_name")
+        );
     }
 }

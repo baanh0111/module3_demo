@@ -1,53 +1,74 @@
-//package org.example.demo1.service.impl;
-//
-//import org.example.demo1.entity.Classes;
-//import org.example.demo1.repository.ClassRepository;
-//
-//import java.util.List;
-//
-//public class ClassService {
-//    private ClassRepository classRepository;
-//
-//    public ClassService() {
-//        this.classRepository = new ClassRepository();
-//    }
-//
-//    // Lấy danh sách tất cả lớp
-//    public List<Classes> getAllClasses() {  // ⚠️ Đổi từ List<Class> → List<Classes>
-//        return classRepository.getAllClasses();
-//    }
-//
-//    // Thêm lớp mới
-//    public boolean addClass(String className, int teacherId) {
-//        if (className == null || className.isEmpty() || teacherId <= 0) {
-//            return false;
-//        }
-//        Classes newClass = new Classes(0, className, teacherId);
-//        classRepository.addClass(newClass);
-//        return true;
-//    }
-//
-//    // Lấy thông tin lớp theo ID
-//    public Classes getClassById(int classId) { // ⚠️ Đổi từ Class → Classes
-//        return classRepository.getClassById(classId);
-//    }
-//
-//    // Cập nhật lớp
-//    public boolean updateClass(int classId, String className, int teacherId) {
-//        if (classId <= 0 || className == null || className.isEmpty() || teacherId <= 0) {
-//            return false;
-//        }
-//        Classes updatedClass = new Classes(classId, className, teacherId); // ⚠️ Đổi từ Class → Classes
-//        classRepository.updateClass(updatedClass);
-//        return true;
-//    }
-//
-//    // Xóa lớp
-//    public boolean deleteClass(int classId) {
-//        if (classId <= 0) {
-//            return false;
-//        }
-//        classRepository.deleteClass(classId);
-//        return true;
-//    }
-//}
+package org.example.demo1.service.impl;
+
+import org.example.demo1.entity.Class;
+import org.example.demo1.entity.Student;
+import org.example.demo1.entity.Teacher;
+import org.example.demo1.repository.ClassRepository;
+import org.example.demo1.service.IClassService;
+
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * Triển khai các chức năng cho dịch vụ quản lý lớp học.
+ */
+public class ClassService implements IClassService {
+    private final ClassRepository classRepository = new ClassRepository();
+
+    @Override
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
+
+    @Override
+    public void save(Class clazz) {
+        classRepository.save(clazz);
+    }
+
+    @Override
+    public void remove(int class_id)  { // Thay int id thành int class_id
+        try {
+            classRepository.remove(class_id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void update(int class_id, Class clazz) { // Thay int id thành int class_id
+        classRepository.update(class_id, clazz);
+    }
+
+    @Override
+    public Class findById(int class_id) { // Thay int id thành int class_id
+        return classRepository.findById(class_id);
+    }
+
+
+    @Override
+    public List<Class> findAllByName(String name) {
+        return classRepository.findAllByName(name);
+    }
+
+    @Override
+    public int countStudentsInClass(int classId) {
+        return classRepository.countStudentsInClass(classId);
+    }
+
+    @Override
+    public List<Student> getStudentsByClassId(int class_id) {
+        return classRepository.getStudentsByClassId(class_id);
+    }
+
+    public List<Teacher> getTeachersWithoutClass() {
+        return classRepository.findTeachersWithoutClass();
+    }
+
+    @Override
+    public String getTeacherNameByClassId(int classId) {
+        return classRepository.getTeacherNameByClassId(classId);
+    }
+    public List<Student> getStudentsInClassId(int class_id){
+        return classRepository.getStudentsInClassId(class_id);
+    }
+}
