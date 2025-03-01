@@ -94,7 +94,7 @@ public class ClassRepository {
         }
     }
 
-    /*public void update(int class_id, Class clazz) throws SQLException { // Thay int id thành int class_id
+    /*public void update(int class_id, Class clazz) throws SQLException {
         String query = "UPDATE classes SET class_name = ?, teacher_id = ? WHERE class_id = ?";
 
         try (Connection connection = getConnection();

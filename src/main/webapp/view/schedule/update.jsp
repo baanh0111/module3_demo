@@ -19,7 +19,7 @@
                 <option value="">-- Chọn lớp --</option>
                 <c:forEach var="clazz" items="${classes}">
                     <option value="${clazz.class_id}" ${clazz.class_id == schedule.class_id ? 'selected' : ''}>
-                            ${clazz.class_name}
+                            ${clazz.name}
                     </option>
                 </c:forEach>
             </select>
@@ -29,7 +29,7 @@
             <select class="form-select" id="subject_id" name="subject_id" required>
                 <option value="">-- Chọn môn --</option>
                 <c:forEach var="subject" items="${subjects}">
-                    <option value="${subject.id}" ${subject.id == schedule.subject_id ? 'selected' : ''}>
+                    <option value="${subject.subject_id}" ${subject.subject_id == schedule.subject_id ? 'selected' : ''}>
                             ${subject.subject_name}
                     </option>
                 </c:forEach>

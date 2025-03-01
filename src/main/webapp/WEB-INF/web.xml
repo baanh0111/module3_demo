@@ -23,6 +23,7 @@
         <servlet-name>TeacherController</servlet-name>
         <url-pattern>/teachers</url-pattern>
     </servlet-mapping>
+
 </web-app>
   <!-- <servlet>
      <servlet-name>ClassController</servlet-name>

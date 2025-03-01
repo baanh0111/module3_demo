@@ -7,9 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Thêm Mới Lịch Học</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        input[type="text"].flatpickr-input {
+        /* Ép buộc hiển thị thời gian theo định format 24 giờ */
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+        input[type="time"] {
             width: 100%;
             padding: 0.375rem 0.75rem;
             font-size: 1rem;
@@ -55,68 +58,29 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="start_time" class="form-label">Thời Gian Bắt Đầu (HH:MM:SS) <span style="color: red;">*</span></label>
-            <input type="text" class="form-control flatpickr-input" id="start_time" name="start_time" required>
+            <label for="start_time" class="form-label">Thời Gian Bắt Đầu (HH:MM) <span style="color: red;">*</span></label>
+            <input type="time" class="form-control" id="start_time" name="start_time" required step="1">
         </div>
         <div class="mb-3">
-            <label for="end_time" class="form-label">Thời Gian Kết Thúc (HH:MM:SS) <span style="color: red;">*</span></label>
-            <input type="text" class="form-control flatpickr-input" id="end_time" name="end_time" required>
+            <label for="end_time" class="form-label">Thời Gian Kết Thúc (HH:MM) <span style="color: red;">*</span></label>
+            <input type="time" class="form-control" id="end_time" name="end_time" required step="1">
         </div>
         <button type="submit" class="btn btn-primary">Lưu</button>
         <a href="schedules" class="btn btn-secondary">Hủy</a>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    // Cấu hình flatpickr để hiển thị và gửi định formato HH:MM:SS (24 giờ)
-    flatpickr("#start_time", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i:S", // Định dạng 24 giờ (HH:MM:SS)
-        time_24hr: true,
-        minuteIncrement: 1,
-        secondIncrement: 1, // Cho phép nhập giây
-        defaultHour: 9, // Giá trị mặc định là 9:00:00
-        defaultMinute: 0,
-        defaultSecond: 0,
-        onClose: function(selectedDates, dateStr, instance) {
-            let time = dateStr;
+    // Ép buộc định format 24 giờ và validation
+    document.querySelectorAll('input[type="time"]').forEach(input => {
+        input.addEventListener('change', function() {
+            let time = this.value;
             if (time) {
-                // Đảm bảo định dạng HH:MM:SS, nếu chỉ nhập HH:MM thì thêm :00
-                let parts = time.split(':');
-                if (parts.length === 2) {
-                    time = time + ':00'; // Thêm giây mặc định là 00 nếu chỉ nhập HH:MM
-                }
-                document.getElementById('start_time').value = time; // Gửi HH:MM:SS
-            } else {
-                document.getElementById('start_time').value = '09:00:00'; // Giá trị mặc định nếu không chọn
+                // Đảm bảo định format HH:MM, trình duyệt sẽ tự thêm :00 khi gửi
+                let [hours, minutes] = time.split(':');
+                this.value = hours + ':' + minutes;
             }
-        }
-    });
-
-    flatpickr("#end_time", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i:S", // Định dạng 24 giờ (HH:MM:SS)
-        time_24hr: true,
-        minuteIncrement: 1,
-        secondIncrement: 1, // Cho phép nhập giây
-        defaultHour: 10, // Giá trị mặc định là 10:00:00
-        defaultMinute: 0,
-        defaultSecond: 0,
-        onClose: function(selectedDates, dateStr, instance) {
-            let time = dateStr;
-            if (time) {
-                let parts = time.split(':');
-                if (parts.length === 2) {
-                    time = time + ':00'; // Thêm giây mặc định là 00 nếu chỉ nhập HH:MM
-                }
-                document.getElementById('end_time').value = time; // Gửi HH:MM:SS
-            } else {
-                document.getElementById('end_time').value = '10:00:00'; // Giá trị mặc định nếu không chọn
-            }
-        }
+        });
     });
 
     // Validation trước khi submit
@@ -128,14 +92,14 @@
             e.preventDefault();
             return false;
         }
-        const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/; // Cho phép HH:MM hoặc HH:MM:SS
+        const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/; // Chỉ chấp nhận HH:MM
         if (!timeRegex.test(startTime) || !timeRegex.test(endTime)) {
-            alert('Thời gian phải có định dạng HH:MM hoặc HH:MM:SS (ví dụ: 09:30 hoặc 09:30:00)!');
+            alert('Thời gian phải có định format HH:MM (ví dụ: 09:30)!');
             e.preventDefault();
             return false;
         }
-        const [startHour, startMin] = startTime.split(':').slice(0, 2).map(Number); // Chỉ lấy giờ và phút
-        const [endHour, endMin] = endTime.split(':').slice(0, 2).map(Number); // Chỉ lấy giờ và phút
+        const [startHour, startMin] = startTime.split(':').map(Number);
+        const [endHour, endMin] = endTime.split(':').map(Number);
         if (endHour * 60 + endMin <= startHour * 60 + startMin) {
             alert('Thời gian kết thúc phải lớn hơn thời gian bắt đầu!');
             e.preventDefault();

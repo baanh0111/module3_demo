@@ -50,7 +50,8 @@ public class ScheduleRepository {
         if (schedule.getStart_time() == null || schedule.getEnd_time() == null) {
             throw new IllegalArgumentException("Thời gian bắt đầu và kết thúc không được để trống");
         }
-        String query = "INSERT INTO schedules (class_id, subject_id, day_of_week, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO schedules (class_id, subject_id, day_of_week, start_time, end_time) " +
+                "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, schedule.getClass_id());
