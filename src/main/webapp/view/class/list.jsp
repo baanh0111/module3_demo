@@ -10,14 +10,65 @@
   <style>
     body {
       font-family: 'Arial', 'sans-serif', 'Roboto', 'Helvetica', 'Times New Roman'; /* Font hỗ trợ tiếng Việt */
+      background-color: #f8f9fa; /* Màu nền nhẹ */
+    }
+    .container {
+      max-width: 1200px; /* Giới hạn chiều rộng */
+      background-color: #ffffff; /* Nền trắng cho container */
+      padding: 20px;
+      border-radius: 10px; /* Bo góc */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    }
+    h2 {
+      color: #343a40; /* Màu chữ đậm */
+      font-weight: bold;
+    }
+    .btn-primary, .btn-info, .btn-warning, .btn-danger {
+      border-radius: 5px; /* Bo góc nút */
+      padding: 6px 12px; /* Tăng padding cho nút */
+      transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+    }
+    .btn-primary:hover, .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+      opacity: 0.9; /* Hiệu ứng hover */
+    }
+    .table {
+      border-radius: 5px;
+      overflow: hidden; /* Đảm bảo bo góc không bị cắt */
+    }
+    .table-primary {
+      background-color: #007bff; /* Màu xanh đậm cho header */
+      color: white;
+    }
+    .alert {
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    .modal-content {
+      border-radius: 10px;
+    }
+    .modal-header {
+      background-color: #dc3545; /* Màu đỏ cho header modal xóa */
+      color: white;
+      border-bottom: none;
+    }
+    .modal-footer {
+      border-top: none;
     }
   </style>
 </head>
 <body>
 <div class="container mt-4">
   <h2 class="text-center mb-4">Danh sách lớp học</h2>
-  <button class="btn btn-primary mb-3" onclick="window.location.href='/classes?action=create';">Thêm mới</button>
 
+  <!-- Nút Home và Thêm mới -->
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button class="btn btn-info me-2" onclick="window.location.href='/';">Home</button>
+      <button class="btn btn-primary" onclick="window.location.href='/classes?action=create';">Thêm mới</button>
+    </div>
+  </div>
+
+  <!-- Bảng danh sách lớp học -->
   <table class="table table-bordered table-hover">
     <thead class="table-primary">
     <tr class="text-center">
@@ -38,18 +89,18 @@
         <td>
           <a href="/classes?action=details&class_id=${clazz.class_id}" class="btn btn-info btn-sm">Chi tiết</a>
           <a href="/classes?action=edit&class_id=${clazz.class_id}" class="btn btn-warning btn-sm">Sửa</a>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete${clazz.class_id}"> <!-- Sử dụng class_id -->
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete${clazz.class_id}">
             Xóa
           </button>
         </td>
       </tr>
 
       <!-- Modal xác nhận xóa -->
-      <div class="modal fade" id="delete${clazz.class_id}" tabindex="-1" aria-labelledby="modalLabel${clazz.class_id}" aria-hidden="true"> <!-- Sử dụng class_id -->
+      <div class="modal fade" id="delete${clazz.class_id}" tabindex="-1" aria-labelledby="modalLabel${clazz.class_id}" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalLabel${clazz.class_id}">Xóa lớp học</h5> <!-- Sử dụng class_id -->
+              <h5 class="modal-title" id="modalLabel${clazz.class_id}">Xóa lớp học</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -59,7 +110,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <a href="/classes?action=delete&class_id=${clazz.class_id}" class="btn btn-danger">Xác nhận</a> <!-- Sử dụng class_id -->
+              <a href="/classes?action=delete&class_id=${clazz.class_id}" class="btn btn-danger">Xác nhận</a>
             </div>
           </div>
         </div>
@@ -68,6 +119,7 @@
     </tbody>
   </table>
 
+  <!-- Thông báo -->
   <c:if test="${message != null}">
     <div class="alert alert-success text-center" role="alert" id="alert-message">
         ${message}

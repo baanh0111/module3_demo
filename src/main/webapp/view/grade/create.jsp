@@ -4,16 +4,47 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Thêm Điểm Mới</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', 'sans-serif', 'Roboto', 'Helvetica', 'Times New Roman'; /* Font hỗ trợ tiếng Việt */
+            background-color: #f8f9fa; /* Màu nền nhẹ */
+        }
+        .container {
+            max-width: 600px; /* Giới hạn chiều rộng nhỏ hơn để phù hợp với form */
+            background-color: #ffffff; /* Nền trắng cho container */
+            padding: 20px;
+            border-radius: 10px; /* Bo góc */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+            margin-top: 50px; /* Khoảng cách trên lớn hơn */
+        }
+        h2 {
+            color: #343a40; /* Màu chữ đậm */
+            font-weight: bold;
+        }
+        .btn-primary, .btn-secondary, .btn-info {
+            border-radius: 5px; /* Bo góc nút */
+            padding: 8px 16px; /* Tăng padding cho nút */
+            transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+        }
+        .btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+            opacity: 0.9; /* Hiệu ứng hover */
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
-    <h2>Thêm Điểm Mới</h2>
+    <h2 class="text-center mb-4">Thêm Điểm Mới</h2>
     <form action="/grades?action=add" method="post">
         <div class="mb-3">
             <label for="student_id" class="form-label">Học Sinh</label>
             <select name="student_id" id="student_id" class="form-select" required>
+                <option value="" disabled selected>-- Chọn học sinh --</option>
                 <c:forEach var="student" items="${students}">
                     <option value="${student.id}">${student.name}</option>
                 </c:forEach>
@@ -22,6 +53,7 @@
         <div class="mb-3">
             <label for="subject_id" class="form-label">Môn Học</label>
             <select name="subject_id" id="subject_id" class="form-select" required>
+                <option value="" disabled selected>-- Chọn môn học --</option>
                 <c:forEach var="subject" items="${subjects}">
                     <option value="${subject.subject_id}">${subject.subject_name}</option>
                 </c:forEach>
@@ -29,19 +61,29 @@
         </div>
         <div class="mb-3">
             <label for="score" class="form-label">Điểm</label>
-            <input type="number" name="score" id="score" class="form-control" step="0.1" required>
+            <input type="number" name="score" id="score" class="form-control" step="0.1" min="0" max="10" required>
         </div>
         <div class="mb-3">
             <label for="exam_type" class="form-label">Loại Kỳ Thi</label>
             <select name="exam_type" id="exam_type" class="form-select" required>
+                <option value="" disabled selected>-- Chọn loại kỳ thi --</option>
                 <option value="Regular">Regular</option>
                 <option value="Midterm">Midterm</option>
                 <option value="Final">Final</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Thêm Điểm</button>
+
+        <!-- Nút Home, Quay lại và Thêm Điểm -->
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="button" class="btn btn-info me-2" onclick="window.location.href='/';">Home</button>
+                <a href="/grades?action=list" class="btn btn-secondary">Quay lại</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Thêm Điểm</button>
+        </div>
     </form>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

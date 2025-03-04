@@ -53,8 +53,12 @@
       <input type="email" class="form-control" id="email" name="email" value="${student.email}" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">Cập Nhật</button>
-    <a href="students" class="btn btn-secondary">Hủy</a>
+    <!-- Button section with Home, Cancel, and Update -->
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-info" onclick="window.location.href='/';">Home</button>
+      <button type="submit" class="btn btn-primary">Cập Nhật</button>
+      <a href="students" class="btn btn-secondary">Hủy</a>
+    </div>
   </form>
 </div>
 

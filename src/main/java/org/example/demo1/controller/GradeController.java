@@ -23,41 +23,41 @@ public class GradeController extends HttpServlet {
             if ("list".equals(action)) {
                 request.setAttribute("grades", gradeService.getAll());
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.getRequestDispatcher("/view/grade/list.jsp").forward(request, response);
             } else if ("listRegular".equals(action)) {
                 request.setAttribute("grades", gradeService.getByExamType("Regular"));
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.setAttribute("examType", "Regular");
                 request.getRequestDispatcher("/view/grade/list.jsp").forward(request, response);
             } else if ("listMidterm".equals(action)) {
                 request.setAttribute("grades", gradeService.getByExamType("Midterm"));
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.setAttribute("examType", "Midterm");
                 request.getRequestDispatcher("/view/grade/list.jsp").forward(request, response);
             } else if ("listFinal".equals(action)) {
                 request.setAttribute("grades", gradeService.getByExamType("Final"));
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.setAttribute("examType", "Final");
                 request.getRequestDispatcher("/view/grade/list.jsp").forward(request, response);
             } else if ("add".equals(action)) {
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.getRequestDispatcher("/view/grade/create.jsp").forward(request, response);
             } else if ("edit".equals(action)) {
                 int gradeId = Integer.parseInt(request.getParameter("grade_id"));
                 Grade grade = gradeService.findById(gradeId);
                 request.setAttribute("grade", grade);
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.getRequestDispatcher("/view/grade/update.jsp").forward(request, response);
             } else {
                 request.setAttribute("grades", gradeService.getAll());
                 request.setAttribute("students", new StudentService().getAll());
-                request.setAttribute("subjects", new SubjectService().getAll());
+                request.setAttribute("subjects", new SubjectService().getAllSubject());
                 request.getRequestDispatcher("/view/grade/list.jsp").forward(request, response);
             }
         } catch (Exception e) {

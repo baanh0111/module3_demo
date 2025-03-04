@@ -5,6 +5,7 @@ import org.example.demo1.repository.StudentRepository;
 import org.example.demo1.service.IStudentService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentService implements IStudentService {
     private static StudentRepository studentRepository = new StudentRepository();
@@ -31,6 +32,13 @@ public class StudentService implements IStudentService {
     @Override
     public Student findById(int id) {
         return studentRepository.findById(id);
+    }
+    @Override
+    public List<Student> searchByName(String keyword) {
+        List<Student> allStudents = getAll(); // Lấy tất cả học sinh
+        return allStudents.stream()
+                .filter(student -> student.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     @Override

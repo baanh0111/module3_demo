@@ -86,6 +86,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Quản Lý Học Phí</h5>
+                    <a href="tuitions" class="btn btn-primary">Truy cập</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

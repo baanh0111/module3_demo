@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Danh sách giáo viên</title>
-  <!-- Bootstrap 5 CDN -->
+  <title>Danh sách học phí</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -23,16 +22,13 @@
       color: #343a40; /* Màu chữ đậm */
       font-weight: bold;
     }
-    .btn-primary, .btn-success, .btn-warning, .btn-danger, .btn-info {
+    .btn-primary, .btn-warning, .btn-danger, .btn-info {
       border-radius: 5px; /* Bo góc nút */
       padding: 6px 12px; /* Tăng padding cho nút */
       transition: all 0.3s ease; /* Hiệu ứng mượt mà */
     }
-    .btn-primary:hover, .btn-success:hover, .btn-warning:hover, .btn-danger:hover, .btn-info:hover {
+    .btn-primary:hover, .btn-warning:hover, .btn-danger:hover, .btn-info:hover {
       opacity: 0.9; /* Hiệu ứng hover */
-    }
-    .form-control {
-      border-radius: 5px;
     }
     .table {
       border-radius: 5px;
@@ -57,70 +53,69 @@
     .modal-footer {
       border-top: none;
     }
+    .badge {
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
 <div class="container mt-4">
-  <h2 class="text-center mb-4">Danh sách giáo viên</h2>
+  <h2 class="text-center mb-4">Danh sách học phí</h2>
 
   <!-- Nút Home và Thêm mới -->
   <div class="d-flex justify-content-between mb-3">
     <div>
-      <button class="btn btn-info me-2" onclick="window.location.href='/';">Home</button>
-      <button class="btn btn-primary" onclick="window.location.href='/teachers?action=create';">Thêm mới</button>
+      <button class="btn btn-info me-2" onclick="window.location.href='/home';">Home</button>
+      <button class="btn btn-primary" onclick="window.location.href='/tuitions?action=create';">Thêm mới</button>
     </div>
   </div>
 
-  <!-- Bảng danh sách giáo viên -->
+  <!-- Bảng danh sách học phí -->
   <table class="table table-bordered table-hover">
     <thead class="table-primary">
-    <tr>
+    <tr class="text-center">
       <th>STT</th>
-      <th>Họ và tên</th>
-      <th>Ngày sinh</th>
-      <th>Giới tính</th>
-      <th>Địa chỉ</th>
-      <th>Số điện thoại</th>
-      <th>Email</th>
+      <th>Tên sinh viên</th>
+      <th>Số tiền</th>
+      <th>Ngày hết hạn</th>
+      <th>Trạng thái</th>
       <th>Hành động</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="teacher" items="${teachers}" varStatus="status">
-      <tr>
-        <td>${teacher.id}</td>
-        <td>${teacher.name}</td>
-        <td>${teacher.dob}</td>
-        <td>${teacher.gender}</td>
-        <td>${teacher.address}</td>
-        <td>${teacher.phone}</td>
-        <td>${teacher.email}</td>
+    <c:forEach var="tuition" items="${tuitions}" varStatus="status">
+      <tr class="text-center">
+        <td>${status.index + 1}</td>
+        <td>${tuition.student.name}</td>
+        <td>${tuition.amount}</td>
+        <td>${tuition.dueDate}</td>
         <td>
-          <button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='/teachers?action=update&id=${teacher.id}';">
-            Cập nhật
-          </button>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete${teacher.id}">
-            Xóa
-          </button>
+                    <span class="badge ${tuition.paidStatus == 'PAID' ? 'bg-success' : 'bg-danger'}">
+                        ${tuition.paidStatus == 'PAID' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                    </span>
+        </td>
+        <td>
+          <a href="/tuitions?action=update&id=${tuition.tuitionId}" class="btn btn-warning btn-sm">Sửa</a>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete${tuition.tuitionId}">Xóa</button>
         </td>
       </tr>
 
       <!-- Modal xác nhận xóa -->
-      <div class="modal fade" id="delete${teacher.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="delete${tuition.tuitionId}" tabindex="-1" aria-labelledby="modalLabel${tuition.tuitionId}" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Xóa giáo viên</h5>
+              <h5 class="modal-title" id="modalLabel${tuition.tuitionId}">Xóa học phí</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              Bạn có chắc chắn muốn xóa giáo viên <strong>${teacher.name}</strong> không?
+              Bạn có chắc chắn muốn xóa học phí của sinh viên <strong>${tuition.student.name}</strong> không?
               <br>
-              <i style="color: red">Hành động này không thể hoàn tác!</i>
+              <i class="text-danger">Hành động này không thể hoàn tác!</i>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-              <button type="button" class="btn btn-primary" onclick="window.location.href='/teachers?action=delete&id=${teacher.id}';">Xác nhận</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <a href="/tuitions?action=delete&id=${tuition.tuitionId}" class="btn btn-danger">Xác nhận</a>
             </div>
           </div>
         </div>
@@ -131,13 +126,12 @@
 
   <!-- Thông báo -->
   <c:if test="${message != null}">
-    <div class="alert alert-success" role="alert" id="alert-message">
+    <div class="alert alert-success text-center" role="alert" id="alert-message">
         ${message}
     </div>
   </c:if>
 </div>
 
-<!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   setTimeout(function () {

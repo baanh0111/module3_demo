@@ -1,30 +1,40 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package org.example.demo1.entity;
 
 public class Subject {
-    private int subject_id;
-    private String subject_name; // Đổi từ "name" thành "subject_name"
+    private int id;
+    private String name;
 
-    public Subject() {}
-
-    public Subject(int subject_id, String subject_name) { // Cập nhật constructor
-        this.subject_id = subject_id;
-        this.subject_name = subject_name;
+    public Subject(int subject_id, String subject_name) {
+        this.id = subject_id;
+        this.name = subject_name;
     }
 
-    // Getters và Setters
-    public int getSubject_id() {
-        return subject_id;
+    public Subject(String subject_name) {
+        this.name = subject_name;
     }
 
-    public void setSubject_id(int subject_id) {
-        this.subject_id = subject_id;
+    public int getId() {
+        return this.id;
     }
 
-    public String getSubject_name() {
-        return subject_name;
+    public String getName() {
+        return this.name;
     }
 
-    public void setSubject_name(String subject_name) {
-        this.subject_name = subject_name;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String subject_name) {
+        this.name = subject_name;
+    }
+
+    public String toString() {
+        return "Subject{subject_id=" + this.id + ", subject_name='" + this.name + '\'' + '}';
     }
 }

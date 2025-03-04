@@ -12,6 +12,30 @@
     <style>
         body {
             font-family: 'Arial', 'sans-serif', 'Roboto', 'Helvetica', 'Times New Roman'; /* Font hỗ trợ tiếng Việt */
+            background-color: #f8f9fa; /* Màu nền nhẹ */
+        }
+        .container {
+            max-width: 600px; /* Giới hạn chiều rộng nhỏ hơn để phù hợp với form */
+            background-color: #ffffff; /* Nền trắng cho container */
+            padding: 20px;
+            border-radius: 10px; /* Bo góc */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+            margin-top: 50px; /* Khoảng cách trên lớn hơn */
+        }
+        h2 {
+            color: #343a40; /* Màu chữ đậm */
+            font-weight: bold;
+        }
+        .btn-primary, .btn-secondary, .btn-info {
+            border-radius: 5px; /* Bo góc nút */
+            padding: 8px 16px; /* Tăng padding cho nút */
+            transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+        }
+        .btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+            opacity: 0.9; /* Hiệu ứng hover */
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -27,7 +51,7 @@
         <div class="mb-3">
             <label for="teacher" class="form-label">Giáo viên phụ trách</label>
             <select class="form-select" id="teacher" name="teacherId" required>
-                <option value="" disabled selected>Chọn giáo viên(Giáo viên chưa phụ trách lớp nào)</option>
+                <option value="" disabled selected>Chọn giáo viên (Giáo viên chưa phụ trách lớp nào)</option>
                 <% List<Teacher> teachers = (List<Teacher>) request.getAttribute("teachers");
                     for (Teacher teacher : teachers) { %>
                 <option value="<%= teacher.getId() %>"><%= teacher.getName() %></option>
@@ -35,8 +59,12 @@
             </select>
         </div>
 
+        <!-- Nút Home, Quay lại và Thêm lớp -->
         <div class="d-flex justify-content-between">
-            <a href="/classes" class="btn btn-secondary">Quay lại</a>
+            <div>
+                <button type="button" class="btn btn-info me-2" onclick="window.location.href='/';">Home</button>
+                <a href="/classes" class="btn btn-secondary">Quay lại</a>
+            </div>
             <button type="submit" class="btn btn-primary">Thêm lớp</button>
         </div>
     </form>

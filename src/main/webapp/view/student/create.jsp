@@ -36,7 +36,6 @@
       </div>
     </div>
 
-
     <div class="mb-3">
       <label for="address" class="form-label">Địa chỉ</label>
       <input type="text" class="form-control" id="address" name="address" required>
@@ -52,8 +51,11 @@
       <input type="email" class="form-control" id="email" name="email" required>
     </div>
 
-
-    <button type="submit" class="btn btn-primary">Thêm học sinh</button>
+    <!-- Home button and Submit button -->
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-info" onclick="window.location.href='/';">Home</button>
+      <button type="submit" class="btn btn-primary">Thêm học sinh</button>
+    </div>
   </form>
 </div>
 

@@ -11,12 +11,36 @@
     <style>
         body {
             font-family: 'Arial', 'sans-serif', 'Roboto', 'Helvetica', 'Times New Roman'; /* Font hỗ trợ tiếng Việt */
+            background-color: #f8f9fa; /* Màu nền nhẹ */
+        }
+        .container {
+            max-width: 600px; /* Giới hạn chiều rộng nhỏ hơn để phù hợp với form */
+            background-color: #ffffff; /* Nền trắng cho container */
+            padding: 20px;
+            border-radius: 10px; /* Bo góc */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+            margin-top: 50px; /* Khoảng cách trên lớn hơn */
+        }
+        h2 {
+            color: #343a40; /* Màu chữ đậm */
+            font-weight: bold;
+        }
+        .btn-primary, .btn-secondary, .btn-info {
+            border-radius: 5px; /* Bo góc nút */
+            padding: 8px 16px; /* Tăng padding cho nút */
+            transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+        }
+        .btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+            opacity: 0.9; /* Hiệu ứng hover */
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 <div class="container mt-4">
-    <h2 class="text-center">Cập Nhật Lớp Học</h2>
+    <h2 class="text-center mb-4">Cập Nhật Lớp Học</h2>
     <form action="classes?action=update" method="post">
         <input type="hidden" name="class_id" value="${clazz.class_id}">
 
@@ -37,8 +61,14 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Cập Nhật</button>
-        <a href="classes" class="btn btn-secondary">Hủy</a>
+        <!-- Nút Home, Hủy và Cập Nhật -->
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="button" class="btn btn-info me-2" onclick="window.location.href='/';">Home</button>
+                <a href="classes" class="btn btn-secondary">Hủy</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Cập Nhật</button>
+        </div>
     </form>
 </div>
 

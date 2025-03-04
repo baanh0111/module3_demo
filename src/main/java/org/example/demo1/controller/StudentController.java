@@ -35,6 +35,9 @@ public class StudentController extends HttpServlet {
                 case "edit":
                     showEditForm(req, resp);
                     break;
+                case "search": // Thêm case tìm kiếm
+                    searchStudents(req, resp);
+                    break;
                 default:
                     listStudents(req, resp);
             }
@@ -55,6 +58,20 @@ public class StudentController extends HttpServlet {
         } else {
             resp.sendRedirect("/students?message=notfound");
         }
+    }
+    private void searchStudents(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String keyword = req.getParameter("keyword");
+        List<Student> students;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            students = studentService.searchByName(keyword.trim()); // Gọi phương thức tìm kiếm từ service
+            req.setAttribute("keyword", keyword); // Lưu từ khóa để hiển thị lại trên form
+        } else {
+            students = studentService.getAll(); // Nếu không có từ khóa, hiển thị tất cả
+        }
+
+        req.setAttribute("students", students);
+        req.getRequestDispatcher("view/student/list.jsp").forward(req, resp);
     }
 
     private void deleteStudent(HttpServletRequest req, HttpServletResponse resp) throws IOException {

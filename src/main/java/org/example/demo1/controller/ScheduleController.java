@@ -85,7 +85,7 @@ public class ScheduleController extends HttpServlet {
 
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("classes", classService.getAll());
-        request.setAttribute("subjects", subjectService.getAll());
+        request.setAttribute("subjects", subjectService.getAllSubject());
         request.getRequestDispatcher("/view/schedule/create.jsp").forward(request, response);
     }
 
@@ -105,7 +105,7 @@ public class ScheduleController extends HttpServlet {
         int schedule_id = Integer.parseInt(request.getParameter("schedule_id"));
         Schedule schedule = scheduleService.findById(schedule_id);
         request.setAttribute("classes", classService.getAll());
-        request.setAttribute("subjects", subjectService.getAll());
+        request.setAttribute("subjects", subjectService.getAllSubject());
         request.setAttribute("schedule", schedule);
         request.getRequestDispatcher("/view/schedule/update.jsp").forward(request, response);
     }
